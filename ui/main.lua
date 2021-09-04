@@ -1,4 +1,4 @@
-local CoreGui = game:GetService("CoreGui")
+local CoreGui = game.Players.LocalPlayer.PlayerGui.PhoneUI
 local UserInput = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 
