@@ -4,10 +4,12 @@ local getGc = getgc
 local getInfo = debug.getinfo or getinfo
 local getUpvalue = debug.getupvalue or getupvalue or getupval
 local getConstants = debug.getconstants or getconstants or getconsts
-local isXClosure = is_synapse_function or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or checkclosure
+local isXClosure = is_synapse_function or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or istempleclosure or checkclosure
 local isLClosure = islclosure or is_l_closure or (iscclosure and function(f) return not iscclosure(f) end)
 
 assert(getGc and getInfo and getConstants and isXClosure, "Your exploit is not supported")
+
+local placeholderUserdataConstant = newproxy(false)
 
 local function matchConstants(closure, list)
     if not list then
@@ -16,8 +18,8 @@ local function matchConstants(closure, list)
     
     local constants = getConstants(closure)
     
-    for index in pairs(list) do
-        if not constants[index] then
+    for index, value in pairs(list) do
+        if constants[index] ~= value and value ~= placeholderUserdataConstant then
             return false
         end
     end
@@ -46,6 +48,7 @@ local function searchClosure(script, name, upvalueIndex, constants)
     end
 end
 
+aux.placeholderUserdataConstant = placeholderUserdataConstant
 aux.searchClosure = searchClosure
 
 return aux
