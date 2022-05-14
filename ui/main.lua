@@ -1,4 +1,4 @@
-local CoreGui = game.Players.LocalPlayer.PlayerGui.PhoneUI
+local CoreGui = getgenv().HydroxideParent or game.CoreGui
 local UserInput = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 
